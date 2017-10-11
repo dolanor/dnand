@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"math/rand"
-	"time"
 )
 
 type Ability int8
@@ -19,12 +17,7 @@ type Character struct {
 	Strength, Dexterity, Constitution Ability
 }
 
-func d20(n int) int {
-	var sum int
-	for i := 0; i < n; i++ {
-		sum += rand.Intn(20) + 1
 	}
-	return sum
 }
 
 func RoundInit(c1, c2 Character) []Character {
@@ -43,10 +36,6 @@ func Fight(c1, c2 Character) Character {
 
 		return c1
 	}
-}
-
-func init() {
-	rand.Seed(time.Now().UTC().UnixNano())
 }
 
 func main() {
