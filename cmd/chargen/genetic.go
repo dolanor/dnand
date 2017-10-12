@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 
+	"github.com/Pallinder/go-randomdata"
 	"github.com/Pallinder/sillyname-go"
 
 	"github.com/MaxHalford/gago"
@@ -45,13 +47,19 @@ func (c *Character) Mutate(rng *rand.Rand) {
 }
 
 func (c *Character) Crossover(Y gago.Genome, rng *rand.Rand) (gago.Genome, gago.Genome) {
-	return c, Y.(*Character)
+	// We mostly crossover lastname and regenerate a new first name to track heritage
+	n := c.Clone().(*Character)
+	n.Char.FirstName = randomdata.FirstName(randomdata.RandomGender)
+
+	return n, Y.(*Character)
 }
 
 func (c *Character) Clone() gago.Genome {
 	y := Character{
-		Characteristics:         c.Characteristics,
-		OriginalCharacteristics: c.OriginalCharacteristics,
+		Char: Char{
+			Characteristics:         c.Characteristics,
+			OriginalCharacteristics: c.OriginalCharacteristics,
+		},
 		GA: c.GA,
 	}
 
@@ -59,20 +67,25 @@ func (c *Character) Clone() gago.Genome {
 }
 func BestCharacterFactory(ga *gago.GA) func(*rand.Rand) gago.Genome {
 	return func(rng *rand.Rand) gago.Genome {
+		factoryCall++
 		//TODO use class HP die
 		dice := []int{4, 6, 8, 10, 12}
 		d := rand.Intn(len(dice))
+		fname := strings.Split(sillyname.GenerateStupidName(), " ")
 		ch := Characteristics{
-			Name:         sillyname.GenerateStupidName(),
+			FirstName:    fname[0],
+			LastName:     fname[1],
 			Strength:     Ability(d6(3)),
 			Dexterity:    Ability(d6(3)),
 			Constitution: Ability(d6(3)),
 			HP:           roll(dice[d], 1),
 		}
 		cn := Character{
-			OriginalCharacteristics: ch,
-			Characteristics:         ch,
-			GA:                      ga,
+			Char: Char{
+				OriginalCharacteristics: ch,
+				Characteristics:         ch,
+			},
+			GA: ga,
 		}
 
 		return &cn
