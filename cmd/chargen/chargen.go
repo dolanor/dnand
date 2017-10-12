@@ -14,9 +14,9 @@ func main() {
 	ga = gago.Generational(BestCharacterFactory(&ga))
 	ga.Initialize()
 
-	fmt.Printf("Best fitness at generation 0: %f. %v\n", ga.CurrentBest.Fitness, ga.CurrentBest.Genome)
-	for i := 1; i < 10; i++ {
+	fmt.Printf("Best fitness at generation 0: %f. %v\n", ga.Best.Fitness, ga.Best.Genome)
+	for i := 1; i < 100; i++ {
 		ga.Enhance()
-		fmt.Printf("Best fitness at generation %d: %f. %v\n", i, ga.CurrentBest.Fitness, ga.CurrentBest.Genome)
+		fmt.Printf("Best fitness at generation %d: %f. %v\n", i, ga.Best.Fitness, ga.Best.Genome)
 	}
 }
