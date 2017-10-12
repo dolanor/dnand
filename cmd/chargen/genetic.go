@@ -33,25 +33,31 @@ func (c *Character) Crossover(Y gago.Genome, rng *rand.Rand) (gago.Genome, gago.
 
 func (c *Character) Clone() gago.Genome {
 	y := Character{
-		Strength:     c.Strength,
-		Dexterity:    c.Dexterity,
-		Constitution: c.Constitution,
-		HP:           c.HP,
+		Characteristics:         c.Characteristics,
+		OriginalCharacteristics: c.OriginalCharacteristics,
+		GA: c.GA,
 	}
 
 	return &y
 }
+func BestCharacterFactory(ga *gago.GA) func(*rand.Rand) gago.Genome {
+	return func(rng *rand.Rand) gago.Genome {
+		//TODO use class HP die
+		dice := []int{4, 6, 8, 10, 12}
+		d := rand.Intn(len(dice))
+		ch := Characteristics{
+			Name:         sillyname.GenerateStupidName(),
+			Strength:     Ability(d6(3)),
+			Dexterity:    Ability(d6(3)),
+			Constitution: Ability(d6(3)),
+			HP:           roll(dice[d], 1),
+		}
+		cn := Character{
+			OriginalCharacteristics: ch,
+			Characteristics:         ch,
+			GA:                      ga,
+		}
 
-func CharacterFactory(rng *rand.Rand) gago.Genome {
-	//TODO use class HP die
-	dice := []int{4, 6, 8, 10, 12}
-	d := rand.Intn(len(dice))
-	cn := Character{
-		Strength:     Ability(d6(3)),
-		Dexterity:    Ability(d6(3)),
-		Constitution: Ability(d6(3)),
-		HP:           roll(dice[d], 1),
+		return &cn
 	}
-
-	return &cn
 }
