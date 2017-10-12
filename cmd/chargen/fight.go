@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+//	"fmt"
 )
 
 func RoundOrder(c1, c2 Character) []Character {
@@ -19,9 +19,9 @@ func Fight(c1, c2 Character) Character {
 
 	i := 1
 	for ; ; i++ {
-		fmt.Printf("Round %d\n", i)
+		//		fmt.Printf("Round %d\n", i)
 		for o, c := range ro {
-			fmt.Printf("%s's turn… [%d HP]\n", c.Name, c.HP)
+			//			fmt.Printf("%s's turn… [%d HP]\n", c.Name, c.HP)
 			var tgt *Character
 			if o == 0 {
 				tgt = &ro[1]
