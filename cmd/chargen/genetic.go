@@ -1,13 +1,30 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
+	"time"
+
+	"github.com/Pallinder/sillyname-go"
 
 	"github.com/MaxHalford/gago"
 )
 
 func (c Character) Evaluate() float64 {
-	return float64(30 - (c.Dexterity.Bonus() + c.Strength.Bonus() + c.Constitution.Bonus() + c.HP))
+	tgt, ok := c.GA.CurrentBest.Genome.(*Character)
+	if !ok {
+		fmt.Println("Couldn't get the current best!")
+		return 1000.0
+	}
+	start := time.Now()
+	winner := Fight(c, *tgt)
+	elapsed := time.Since(start)
+	if c != winner {
+		return 1000.0
+	}
+	return float64(winner.HP) / float64(winner.OriginalCharacteristics.HP) * float64(elapsed.Nanoseconds())
+
+	//return float64(30 - (c.Dexterity.Bonus() + c.Strength.Bonus() + c.Constitution.Bonus() + c.HP))
 }
 
 func (c *Character) Mutate(rng *rand.Rand) {
