@@ -67,7 +67,6 @@ func (c *Character) Clone() gago.Genome {
 }
 func BestCharacterFactory(ga *gago.GA) func(*rand.Rand) gago.Genome {
 	return func(rng *rand.Rand) gago.Genome {
-		factoryCall++
 		//TODO use class HP die
 		dice := []int{4, 6, 8, 10, 12}
 		d := rand.Intn(len(dice))
