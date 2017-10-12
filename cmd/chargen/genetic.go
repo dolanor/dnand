@@ -7,7 +7,7 @@ import (
 )
 
 func (c Character) Evaluate() float64 {
-	return float64(c.Dexterity.Bonus() + c.Strength.Bonus() + c.Constitution.Bonus() + c.HP)
+	return float64(30 - (c.Dexterity.Bonus() + c.Strength.Bonus() + c.Constitution.Bonus() + c.HP))
 }
 
 func (c *Character) Mutate(rng *rand.Rand) {
@@ -17,7 +17,13 @@ func (c *Character) Mutate(rng *rand.Rand) {
 	}
 	ab := []*Ability{&c.Strength, &c.Dexterity, &c.Constitution}
 	for i := range ab {
-		*ab[i] += Ability(*ab[i] * Ability(rng.NormFloat64()))
+		mut := *ab[i] + Ability(*ab[i]*Ability(rng.NormFloat64()))
+		if mut < 1 {
+			mut = 1
+		} else {
+			mut = 18
+		}
+		*ab[i] = mut
 	}
 }
 
@@ -36,7 +42,7 @@ func (c *Character) Clone() gago.Genome {
 	return &y
 }
 
-func (c Character) CharacterFactory(rng *rand.Rand) gago.Genome {
+func CharacterFactory(rng *rand.Rand) gago.Genome {
 	//TODO use class HP die
 	dice := []int{4, 6, 8, 10, 12}
 	d := rand.Intn(len(dice))
@@ -44,7 +50,7 @@ func (c Character) CharacterFactory(rng *rand.Rand) gago.Genome {
 		Strength:     Ability(d6(3)),
 		Dexterity:    Ability(d6(3)),
 		Constitution: Ability(d6(3)),
-		HP:           roll(d, 1),
+		HP:           roll(dice[d], 1),
 	}
 
 	return &cn
