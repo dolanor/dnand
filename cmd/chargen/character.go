@@ -7,10 +7,17 @@ import (
 )
 
 type Characteristics struct {
-	FirstName                         string
-	LastName                          string
-	Strength, Dexterity, Constitution Ability
-	HP                                int
+	FirstName string
+	LastName  string
+
+	Strength     Ability
+	Dexterity    Ability
+	Constitution Ability
+	Intelligence Ability
+	Wisdom       Ability
+	Charisma     Ability
+
+	HP int
 }
 type Char struct {
 	OriginalCharacteristics Characteristics
