@@ -8,6 +8,7 @@ import (
 
 	"github.com/Pallinder/go-randomdata"
 	"github.com/Pallinder/sillyname-go"
+	"github.com/pkg/errors"
 
 	"github.com/MaxHalford/gago"
 )
@@ -89,4 +90,52 @@ func BestCharacterFactory(ga *gago.GA) func(*rand.Rand) gago.Genome {
 
 		return &cn
 	}
+}
+
+type SelFight struct {
+	NContestants int
+}
+
+// Apply SelTournament.
+func (sel SelFight) Apply(n int, indis gago.Individuals, rng *rand.Rand) (gago.Individuals, []int, error) {
+	// Check that the number of individuals is large enough
+	if len(indis)-n < sel.NContestants-1 {
+		return nil, nil, fmt.Errorf("Not enough individuals to select %d "+
+			"with NContestants = %d, have %d individuals and need at least %d",
+			n, sel.NContestants, len(indis), sel.NContestants+n-1)
+	}
+	var (
+		winners         = make(gago.Individuals, n)
+		indexes         = make([]int, n)
+		notSelectedIdxs = newInts(len(indis))
+	)
+	for i := range winners {
+		// Sample contestants
+		var (
+			contestants, idxs, _ = sampleInts(notSelectedIdxs, sel.NContestants, rng)
+			winnerIdx            int
+		)
+		// Find the best contestant
+		winners[i] = indis[contestants[0]]
+		//winners[i].Evaluate()
+		for j, idx := range contestants[1:] {
+			indis[idx]
+			if indis[idx].GetFitness() < winners[i].Fitness {
+				winners[i] = indis[idx]
+				indexes[i] = idx
+				winnerIdx = idxs[j]
+			}
+		}
+		// Ban the winner from re-participating
+		notSelectedIdxs = append(notSelectedIdxs[:winnerIdx], notSelectedIdxs[winnerIdx+1:]...)
+	}
+	return winners.Clone(rng), indexes, nil
+}
+
+// Validate SelTournament fields.
+func (sel SelFight) Validate() error {
+	if sel.NContestants < 1 {
+		return errors.New("NContestants should be higher than 0")
+	}
+	return nil
 }
