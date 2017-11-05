@@ -30,7 +30,10 @@ func Fight(c1, c2 Character) Character {
 			}
 			*tgt = c.Attack(*tgt)
 			if tgt.HP < 1 {
-				return c
+				tgt.Lost++
+				c.Won++
+				fmt.Printf("FIGHT: %s Won!\n", c)
+				return c, i
 			}
 		}
 	}

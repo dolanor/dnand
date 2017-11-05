@@ -26,7 +26,8 @@ type Char struct {
 
 type Character struct {
 	Char
-	GA *gago.GA
+	GA        *gago.GA
+	Won, Lost int
 }
 
 func (c Character) AC() int {
@@ -37,5 +38,5 @@ func (c Character) FullName() string {
 }
 
 func (c Character) String() string {
-	return fmt.Sprintf("<%s> 💗 %d/%d 💪 %d 🏃 %d 🏠 %d", c.FullName(), c.HP, c.OriginalCharacteristics.HP, c.Strength, c.Dexterity, c.Constitution)
+	return fmt.Sprintf("<%s> 💗 %d/%d 💪 %d 🏃 %d 🏠 %d _-_ %d/%d", c.FullName(), c.HP, c.OriginalCharacteristics.HP, c.Strength, c.Dexterity, c.Constitution, c.Won, c.Lost)
 }

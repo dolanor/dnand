@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"math/rand"
+)
+
 // Utils functions mostly copypasted from gago
 func newInts(n int) []int {
 	var ints = make([]int, n)
