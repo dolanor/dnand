@@ -23,6 +23,65 @@ type Characteristics struct {
 	HP     int
 	HPDice int
 }
+
+type SkillID uint8
+
+const (
+	Appraise SkillID = iota
+	Balance
+	Bluff
+	Climb
+	Concentration
+	Craft
+	DecipherScript
+	Diplomacy
+	DisableDevice
+	Disguise
+	EscapeArtist
+	Forgery
+	GatherInformation
+	HandleAnimal
+	Heal
+	Hide
+	Intimidate
+	Jump
+	Knowledge
+	//TODO continue list
+)
+
+var SkillName = [...]string{
+	"Appraise",
+	"Balance",
+	"Bluff",
+	"Climb",
+	"Concentration",
+	"Craft",
+	"DecipherScript",
+	"Diplomacy",
+	"DisableDevice",
+	"Disguise",
+	"EscapeArtist",
+	"Forgery",
+	"GatherInformation",
+	"HandleAnimal",
+	"Heal",
+	"Hide",
+	"Intimidate",
+	"Jump",
+	"Knowledge",
+	//TODO continue list
+}
+
+type Skill struct {
+	UserAbility *Ability
+	Rank        int
+	Desc        string
+}
+
+func (s Skill) Check(DC int) int {
+	return d20(1) + s.Rank + s.UserAbility.Bonus() /* + Misc Modifiers*/ - DC
+}
+
 type Char struct {
 	OriginalCharacteristics Characteristics
 	Characteristics
