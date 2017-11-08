@@ -7,6 +7,7 @@ import (
 )
 
 type Characteristics struct {
+	ID        uint64
 	FirstName string
 	LastName  string
 
@@ -17,7 +18,10 @@ type Characteristics struct {
 	Wisdom       Ability
 	Charisma     Ability
 
-	HP int
+	//Skills map[SkillID]Skill
+
+	HP     int
+	HPDice int
 }
 type Char struct {
 	OriginalCharacteristics Characteristics

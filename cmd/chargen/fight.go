@@ -14,7 +14,7 @@ func RoundOrder(c1, c2 Character) []Character {
 	}
 }
 
-func Fight(c1, c2 Character) Character {
+func Fight(c1, c2 Character) (Character, int) {
 	ro := RoundOrder(c1, c2)
 
 	i := 1
