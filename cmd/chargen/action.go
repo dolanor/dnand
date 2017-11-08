@@ -5,14 +5,18 @@ import (
 )
 
 func (c Character) Attack(o Character) Character {
-	roll := d20(1)
+	hitRoll := d20(1)
 	bab := c.Strength.Bonus()
-	if roll+bab < o.AC() {
+	if hitRoll+bab < o.AC() {
 		//		fmt.Printf("%s didn't get hit\n", o.Name)
 		return o
 	}
 
-	dmg := d4(1)
+	nbDice := 1
+	if hitRoll == 20 {
+		nbDice = 2
+	}
+	dmg := roll(4, nbDice)
 	o.HP -= dmg
 	//	fmt.Printf("%s lost %d HP\n", o.Name, dmg)
 	return o
