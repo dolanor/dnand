@@ -89,8 +89,13 @@ type Char struct {
 
 type Character struct {
 	Char
-	GA        *gago.GA
-	Won, Lost int
+	GA               *gago.GA
+	Won, Lost        int
+	availableActions Actions
+}
+
+func (c Character) AvailableActions() Actions {
+	return c.availableActions
 }
 
 func (c Character) AC() int {

@@ -28,7 +28,7 @@ func (c Character) Evaluate() float64 {
 	_ = elapsed
 	//	return ((1.01 - (float64(winner.HP) / float64(winner.OriginalCharacteristics.HP))) * (0.01 * float64(elapsed.Nanoseconds())) * float64(rounds))
 	tot := c.Won + c.Lost
-	fmt.Printf("<%v> %d/%d\n", c.FullName(), c.Won, c.Lost)
+	fmt.Printf("Evaluating %v\n", c)
 	return float64(tot) - float64(c.Won)/float64(tot)
 
 	// 10/10 * 1sec = 1 * 1

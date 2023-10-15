@@ -4,28 +4,43 @@ import (
 //	"fmt"
 )
 
-type Entity struct {
-	Target
+type Entity interface {
+	Character() Character
 }
 
 type Target interface {
-	Character() Character
+	Entity
 }
 
 type Effects []Effect
 type Effect struct {
 }
 
-type Actionable interface {
-	Act(src Entity, tgt Target) Effects
+type Actions []Action
+
+type Action interface {
+	ID() string
+	Act() Effects
 }
 
 type Attack struct {
+	src, tgt Entity
 }
 
+/*
 func (a *Attack) Act(src Entity, tgt Target) Effects {
 	src.Character().Attack(tgt.Character())
 	return Effects{}
+}*/
+func (a *Attack) Act() Effects {
+	a.src.Character().Attack(a.tgt.Character())
+	return Effects{}
+}
+
+func (c *Character) Act() Effects {
+	//TODO choose an action from its available action
+	action := Attack{}
+	return action.Act()
 }
 
 func (c Character) Attack(o Character) Character {
@@ -46,7 +61,7 @@ func (c Character) Attack(o Character) Character {
 	return o
 }
 
-type NewActionable interface {
+type NewActor interface {
 	Act() Effects
 }
 
@@ -62,4 +77,5 @@ func (ma *MultiAttack) Act() Effects {
 	for _, t := range ma.Targets {
 		ma.Src.Character().Attack(t.Character())
 	}
+	return Effects{}
 }
